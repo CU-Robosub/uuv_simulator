@@ -206,8 +206,14 @@ void UnderwaterObjectPlugin::Update(const common::UpdateInfo &_info)
     angularAccel = link->GetRelativeAngularAccel().GetLength();
 #endif
 
-    GZ_ASSERT(!std::isnan(linearAccel) && !std::isnan(angularAccel),
-      "Linear or angular accelerations are invalid.");
+    //GZ_ASSERT(!std::isnan(linearAccel) && !std::isnan(angularAccel),
+    //  "Linear or angular accelerations are invalid.");
+    if(std::isnan(linearAccel)){
+      linearAccel = 0.0f;
+    }
+    if(std::isnan(angularAccel)){
+      angularAccel = 0.0f;
+    }
 
     hydro->ApplyHydrodynamicForces(time, this->flowVelocity);
     this->PublishRestoringForce(link);
